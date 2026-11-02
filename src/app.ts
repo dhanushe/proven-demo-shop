@@ -4,6 +4,7 @@ import { loadConfig, type Config } from './config.ts'
 import { loadCustomers, type Customer } from './customers.ts'
 import { buildInvoice, type Invoice } from './invoices.ts'
 import { itemsError, orderTotal, type Order, type OrderItem } from './orders.ts'
+import { createRateLimiter, type RateLimit } from './rateLimit.ts'
 
 const STATUS_PAGE = join(import.meta.dirname, '..', 'public', 'index.html')
 
@@ -11,6 +12,7 @@ export interface AppOptions {
   config?: Config
   customers?: Map<string, Customer>
   now?: () => number
+  rateLimit?: RateLimit
 }
 
 export interface App {
@@ -29,6 +31,7 @@ export function createApp(options: AppOptions = {}): App {
   const config = options.config ?? loadConfig()
   const customers = options.customers ?? loadCustomers()
   const now = options.now ?? Date.now
+  const limiter = createRateLimiter(options.rateLimit ?? { limit: config.orderRateLimit, windowMs: config.orderRateWindowSeconds * 1000 }, now)
   const orders = new Map<string, Order>()
   const invoices = new Map<string, Invoice>()
   const invoiceByOrder = new Map<string, Invoice>()
@@ -37,6 +40,13 @@ export function createApp(options: AppOptions = {}): App {
     const body = (await request.json().catch(() => null)) as { customerId?: unknown; items?: unknown } | null
     if (body === null || typeof body.customerId !== 'string') return fail(400, 'invalid_order', 'customerId is required')
     if (!customers.has(body.customerId)) return fail(404, 'unknown_customer', `No customer ${body.customerId}`)
+    const decision = limiter.check(body.customerId)
+    if (!decision.allowed) {
+      return Response.json(
+        { error: 'rate_limited', message: `Too many orders for ${body.customerId}. Retry in ${decision.retryAfterSeconds} seconds.` },
+        { status: 429, headers: { 'retry-after': String(decision.retryAfterSeconds) } },
+      )
+    }
     const problem = itemsError(body.items)
     if (problem) return fail(400, 'invalid_order', problem)
     const items = body.items as OrderItem[]
