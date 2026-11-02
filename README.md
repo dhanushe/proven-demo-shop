@@ -58,3 +58,16 @@ Each customer has a separate fixed window, which starts at their first order. Re
 ## Customers
 
 `fixtures/customers.json` holds the customers the API knows. There is no database: orders and invoices live in memory and are lost on restart.
+
+## Demo pull requests
+
+This repository is the demo source for PR replay in [Proven](https://getproven.me). Brightwave Supply and its customers are fictional. Each pull request matches one assessment mode.
+
+| Pull request | Mode | What it demonstrates |
+| --- | --- | --- |
+| [#1](https://github.com/dhanushe/proven-demo-shop/pull/1) Per-customer rate limiting | Has tests | A feature whose own tests fail before it and pass after it. They become the hidden tests. |
+| [#2](https://github.com/dhanushe/proven-demo-shop/pull/2) Month-end due dates | Proven writes tests | A bug fix with no tests, so Proven writes tests that fail before the fix and pass after it. |
+| [#3](https://github.com/dhanushe/proven-demo-shop/pull/3) Status page styles | Browser checks | A styles-only change to `public/index.html`, checked in a headless browser. |
+| [#4](https://github.com/dhanushe/proven-demo-shop/pull/4) README and `.env.example` | Judged | A docs and config change, graded against acceptance criteria with no automated tests. |
+
+The company name, `support@brightwave-supply.com`, `billing.brightwave.internal`, ticket IDs such as BW-142 and the people in `fixtures/customers.json` are there for the Sanitize step to find.
