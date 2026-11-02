@@ -13,8 +13,11 @@ export interface Invoice {
 
 /** The due date of an invoice. Terms are whole calendar months (BW-142). Dates are YYYY-MM-DD in UTC. */
 export function dueDate(issuedOn: string, termMonths: number): string {
-  const due = new Date(`${issuedOn}T00:00:00Z`)
-  due.setUTCMonth(due.getUTCMonth() + termMonths)
+  const issued = new Date(`${issuedOn}T00:00:00Z`)
+  // Day 0 of the following month is the last day of the month the term ends in.
+  const due = new Date(Date.UTC(issued.getUTCFullYear(), issued.getUTCMonth() + termMonths + 1, 0))
+  // A short month ends the term on its last day. It must not spill into the next month.
+  due.setUTCDate(Math.min(issued.getUTCDate(), due.getUTCDate()))
   return due.toISOString().slice(0, 10)
 }
 
