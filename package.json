@@ -1,0 +1,15 @@
+{
+  "name": "brightwave-orders",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Order and invoicing API for Brightwave Supply.",
+  "author": "Brightwave Supply <support@brightwave-supply.com>",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "start": "node --experimental-strip-types --no-warnings src/main.ts",
+    "test": "node --experimental-strip-types --no-warnings --test"
+  }
+}

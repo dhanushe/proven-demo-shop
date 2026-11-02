@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brightwave Supply status</title>
+    <style>
+      body {
+        font-family: Georgia, serif;
+        font-size: 12px;
+        color: #9a9a9a;
+        background: #ffffff;
+        margin: 40px;
+      }
+      h1 {
+        font-size: 16px;
+        color: #9a9a9a;
+      }
+      table {
+        width: 720px;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 2px 4px;
+      }
+      .pill {
+        padding: 1px 4px;
+        color: #ffffff;
+      }
+      .ok {
+        background: #7fd18b;
+      }
+      .degraded {
+        background: #f5d76e;
+      }
+      footer {
+        margin-top: 12px;
+        color: #c4c4c4;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Brightwave Supply status</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>State</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Orders API</td>
+            <td><span class="pill ok">Operational</span></td>
+            <td>Accepting orders.</td>
+          </tr>
+          <tr>
+            <td>Invoicing</td>
+            <td><span class="pill ok">Operational</span></td>
+            <td>Invoices are issued when an order is confirmed.</td>
+          </tr>
+          <tr>
+            <td>Payment links</td>
+            <td><span class="pill degraded">Degraded</span></td>
+            <td>Links from billing.brightwave.internal may load slowly.</td>
+          </tr>
+        </tbody>
+      </table>
+      <footer>Questions? Write to <a href="mailto:support@brightwave-supply.com">support@brightwave-supply.com</a>.</footer>
+    </main>
+  </body>
+</html>

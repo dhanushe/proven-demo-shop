@@ -1,0 +1,14 @@
+[
+  {
+    "id": "cus_1001",
+    "company": "Halden Marine Outfitters",
+    "contact_name": "Marisol Okafor",
+    "payment_terms_months": 1
+  },
+  {
+    "id": "cus_1002",
+    "company": "Northfield Print Works",
+    "contact_name": "Tomasz Lindqvist",
+    "payment_terms_months": 2
+  }
+]
